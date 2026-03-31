@@ -1,0 +1,191 @@
+{
+  "updatedAt": "2026-03-31T00:00:00.000Z",
+  "businesses": [
+    {
+      "id": "market-eatz",
+      "name": "Market Eatz",
+      "location": { "latitude": 30.1406647, "longitude": -92.0727909 },
+      "address": {
+        "houseNumber": "819",
+        "street": "E Broussard Rd",
+        "city": "Lafayette",
+        "state": "LA",
+        "postalCode": "70508"
+      },
+      "website": "https://marketeatzlouisiana.com/",
+      "amenity": "restaurant",
+      "dailyDeals": [
+        { "day": "Tue", "items": ["$4 tacos (all day)", "$14 taco trios (all day)"] },
+        { "day": "Wed", "items": ["$2 off signature burgers"] },
+        {
+          "day": "Fri",
+          "items": ["$6 Frozen Drinks (Bellinis, Froses, Kosmos, Juju’s Margaritas)"]
+        }
+      ],
+      "happyHours": [
+        {
+          "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+          "start": "15:00",
+          "end": "18:00",
+          "items": [
+            "$6 Frozen and well drinks",
+            "$1 off drafts",
+            "$3 domestic bottles",
+            "$4 import bottles",
+            "$7 onion rings",
+            "$6 mac and cheese",
+            "$7 sweet fries",
+            "$5 Market single slider",
+            "$5 street corn",
+            "$4 tacos"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "legends",
+      "name": "Legends",
+      "location": { "latitude": 30.2263686, "longitude": -92.0175118 },
+      "address": {
+        "houseNumber": "413",
+        "street": "Jefferson St",
+        "city": "Lafayette",
+        "state": "LA",
+        "postalCode": "70501"
+      },
+      "website": "https://legendsoflafayette.com/downtown",
+      "amenity": "bar",
+      "dailyDeals": [
+        { "day": "Mon", "start": "14:00", "end": "02:00", "items": ["Happy hour"] },
+        { "day": "Tue", "start": "19:00", "end": "02:00", "items": ["$5 Margaritas"] },
+        { "day": "Wed", "start": "19:00", "end": "02:00", "items": ["$6 Double Tito's"] },
+        { "day": "Thu", "start": "19:00", "end": "02:00", "items": ["Ladies drinks are half off"] },
+        { "day": "Fri", "start": "19:00", "end": "02:00", "items": ["Manager specials"] },
+        { "day": "Sat", "start": "19:00", "end": "02:00", "items": ["Manager specials"] },
+        { "day": "Sun", "start": "11:00", "end": "23:59", "items": ["$6 house bloody Marys", "2-for-1 wells"] }
+      ]
+    },
+    {
+      "id": "hideaway-on-lee",
+      "name": "Hideaway on Lee",
+      "location": { "latitude": 30.2243458, "longitude": -92.016293 },
+      "address": {
+        "houseNumber": "407",
+        "street": "Lee Avenue",
+        "city": "Lafayette",
+        "state": "LA",
+        "postalCode": "70501"
+      },
+      "amenity": "bar",
+      "happyHours": [
+        {
+          "days": ["Wed", "Thu", "Fri", "Sat", "Sun"],
+          "start": "17:00",
+          "end": "19:00",
+          "items": [
+            "$5 old fashioned",
+            "$5 margarita",
+            "$5 tom collins",
+            "$5 lemon drop",
+            "$5 house wine",
+            "$5 frozen cocktails"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "minami-sushi-bar",
+      "name": "Minami Sushi Bar",
+      "location": { "latitude": 30.2251932, "longitude": -92.0186783 },
+      "address": {
+        "houseNumber": "533",
+        "street": "Jefferson St",
+        "city": "Lafayette",
+        "state": "LA",
+        "postalCode": "70501"
+      },
+      "amenity": "restaurant",
+      "cuisine": "sushi",
+      "happyHours": [
+        {
+          "days": ["Mon", "Tue", "Wed", "Thu"],
+          "start": "17:00",
+          "end": "19:00",
+          "items": ["$5 soju bottles", "$3 beers", "$15 Hana Fuji Apple sake", "$10 Roll of the Month", "$5 appetizers"]
+        },
+        {
+          "days": ["Sun"],
+          "start": "12:00",
+          "end": "14:00",
+          "items": ["$5 soju bottles", "$3 beers", "$15 Hana Fuji Apple sake", "$10 Roll of the Month", "$5 appetizers"]
+        }
+      ]
+    },
+    {
+      "id": "tsunami",
+      "name": "Tsunami",
+      "location": { "latitude": 30.2264277, "longitude": -92.0178854 },
+      "website": "https://www.servingsushi.com/lafayette",
+      "amenity": "restaurant",
+      "cuisine": "sushi",
+      "dailyDeals": [
+        {
+          "day": "Tue",
+          "start": "15:00",
+          "end": "18:00",
+          "items": [
+            "Half off select nigiri/sashimi", 
+            "Half off smoked salt escolar", 
+            "Half off Yuzu albacore & truffle salmon"
+          ]
+        },
+        {
+          "day": "Wed",
+          "start": "15:00",
+          "end": "18:00",
+          "items": [
+            "Half off select nigiri/sashimi", 
+            "Half off smoked salt escolar", 
+            "Half off Yuzu albacore & truffle salmon"
+          ]
+        },
+        {
+          "day": "Thu",
+          "start": "15:00",
+          "end": "18:00",
+          "items": [
+            "Half off select nigiri/sashimi ", 
+            "Half off smoked salt escolar ", 
+            "Half off Yuzu albacore & truffle salmon"
+          ]
+        },
+        {
+          "day": "Fri",
+          "start": "15:00",
+          "end": "18:00",
+          "items": [
+            "Half off select nigiri/sashimi", 
+            "Half off smoked salt escolar", 
+            "Half off Yuzu albacore & truffle salmon"
+          ]
+        }
+      ],
+      "happyHours": [
+        {
+          "days": ["Tue", "Wed", "Thu", "Fri"],
+          "start": "15:00",
+          "end": "21:00",
+          "items": [
+            "$6 martinis",
+            "$5 house wine",
+            "$5 select draft beers",
+            "$5 house sake",
+            "$4 single well liquors",
+            "$4 domestic bottles",
+            "25% off all rolls $10 and under"
+          ]
+        }
+      ]
+    }
+  ]
+}

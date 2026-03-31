@@ -57,3 +57,25 @@ Contributions to this starter project are highly encouraged and welcome! If you 
 
 This repository is licensed under the MIT License. You are granted the freedom to use, modify, and distribute the code for personal or commercial purposes. For more details, please refer to the [LICENSE](https://github.com/FlemingVincent/supabase-starter/blob/main/LICENSE) file.
 # SipSpot
+
+## SipSpot data
+
+Single source of truth (easy manual editing):
+- `data/businesses.lafayette.json`
+
+To load data from a hosted JSON file (no app rebuild needed), set:
+- `EXPO_PUBLIC_BUSINESSES_JSON_URL` in `.env`
+
+Publish helper (validates + writes `dist/businesses.lafayette.json`):
+```bash
+npm run businesses:publish
+```
+
+Optional: upload to Supabase Storage:
+```bash
+SUPABASE_URL=...
+SUPABASE_SERVICE_ROLE_KEY=...
+SUPABASE_STORAGE_BUCKET=...
+SUPABASE_STORAGE_PATH=businesses/lafayette.json \
+  npm run businesses:publish -- --upload-supabase
+```

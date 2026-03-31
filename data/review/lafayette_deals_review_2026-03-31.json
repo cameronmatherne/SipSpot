@@ -1,0 +1,186 @@
+{
+  "generatedAt": "2026-03-31T00:00:00.000Z",
+  "count": 5,
+  "entries": [
+    {
+      "spotId": "manual-market-eatz",
+      "name": "Market Eatz",
+      "publish": true,
+      "reviewerNotes": "Provided by user (manual entry).",
+      "dailyDeals": [
+        {
+          "day": "Tue",
+          "items": ["$4 tacos (all day)", "$14 taco trios (all day)"]
+        },
+        {
+          "day": "Wed",
+          "items": ["$2 off signature burgers"]
+        },
+        {
+          "day": "Fri",
+          "items": ["$6 Frozen Drinks (Bellinis, Froses, Kosmos, Juju’s Margaritas)"]
+        }
+      ],
+      "happyHours": [
+        {
+          "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+          "start": "15:00",
+          "end": "18:00",
+          "items": [
+            "$6 Frozen and well drinks",
+            "$1 off drafts",
+            "$3 domestic bottles",
+            "$4 import bottles",
+            "$7 onion rings",
+            "$6 mac and cheese",
+            "$7 sweet fries",
+            "$5 Market single slider",
+            "$5 street corn",
+            "$4 tacos"
+          ]
+        }
+      ]
+    },
+    {
+      "spotId": "manual-legends-downtown",
+      "name": "Legends Downtown",
+      "publish": true,
+      "reviewerNotes": "Provided by user (manual entry). Times cross midnight, kept as daily deals text.",
+      "dailyDeals": [
+        {
+          "day": "Mon",
+          "items": ["Happy hour (2pm-2am)"]
+        },
+        {
+          "day": "Tue",
+          "items": ["$7 Margaritas (7pm-2am)"]
+        },
+        {
+          "day": "Wed",
+          "items": ["$6 Double Tito's (7pm-2am)"]
+        },
+        {
+          "day": "Thu",
+          "items": ["Ladies drinks are half off (7pm-2am)"]
+        },
+        {
+          "day": "Fri",
+          "items": ["Manager specials (7pm-2am)"]
+        },
+        {
+          "day": "Sat",
+          "items": ["Manager specials (7pm-2am)"]
+        },
+        {
+          "day": "Sun",
+          "items": ["$6 house bloody Marys; 2-for-1 wells (11am-12am)"]
+        }
+      ],
+      "happyHours": []
+    },
+    {
+      "spotId": "osm-node-11597093069",
+      "name": "Hideaway on Lee",
+      "publish": true,
+      "reviewerNotes": "OSM spot is currently named “Hideway on Lee”.",
+      "dailyDeals": [],
+      "happyHours": [
+        {
+          "days": ["Wed", "Thu", "Fri", "Sat", "Sun"],
+          "start": "17:00",
+          "end": "19:00",
+          "items": [
+            "$5 old fashioned",
+            "$5 margarita",
+            "$5 tom collins",
+            "$5 lemon drop",
+            "$5 house wine",
+            "$5 frozen cocktails"
+          ]
+        }
+      ]
+    },
+    {
+      "spotId": "manual-minami-sushi-bar",
+      "name": "Minami Sushi Bar",
+      "publish": true,
+      "reviewerNotes": "Provided by user (manual entry).",
+      "dailyDeals": [],
+      "happyHours": [
+        {
+          "days": ["Mon", "Tue", "Wed", "Thu"],
+          "start": "17:00",
+          "end": "19:00",
+          "items": [
+            "$5 soju bottles",
+            "$3 beers",
+            "$15 Hana Fuji Apple sake",
+            "$10 Roll of the Month",
+            "$5 appetizers"
+          ]
+        },
+        {
+          "days": ["Sun"],
+          "start": "12:00",
+          "end": "14:00",
+          "items": [
+            "$5 soju bottles",
+            "$3 beers",
+            "$15 Hana Fuji Apple sake",
+            "$10 Roll of the Month",
+            "$5 appetizers"
+          ]
+        }
+      ]
+    },
+    {
+      "spotId": "osm-node-5314123055",
+      "name": "Tsunami",
+      "publish": true,
+      "reviewerNotes": "Provided by user.",
+      "dailyDeals": [
+        {
+          "day": "Tue",
+          "items": [
+            "Half off select nigiri/sashimi & 1/2 off smoked salt escolar, Yuzu albacore & truffle salmon (3pm-6pm)"
+          ]
+        },
+        {
+          "day": "Wed",
+          "items": [
+            "Half off select nigiri/sashimi & 1/2 off smoked salt escolar, Yuzu albacore & truffle salmon (3pm-6pm)"
+          ]
+        },
+        {
+          "day": "Thu",
+          "items": [
+            "Half off select nigiri/sashimi & 1/2 off smoked salt escolar, Yuzu albacore & truffle salmon (3pm-6pm)"
+          ]
+        },
+        {
+          "day": "Fri",
+          "items": [
+            "Half off select nigiri/sashimi & 1/2 off smoked salt escolar, Yuzu albacore & truffle salmon (3pm-6pm)"
+          ]
+        }
+      ],
+      "happyHours": [
+        {
+          "days": ["Tue", "Wed", "Thu", "Fri"],
+          "start": "15:00",
+          "end": "21:00",
+          "items": [
+            "$6 martinis",
+            "$5 house wine",
+            "$5 select draft beers",
+            "$5 house sake",
+            "$4 single well liquors",
+            "$4 domestic bottles",
+            "25% off all rolls $10 and under"
+          ]
+        }
+      ]
+    }
+  ]
+}
+
