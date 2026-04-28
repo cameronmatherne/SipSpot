@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 
-import type { Spot, TimeWindow, Weekday } from "./spots";
+import type { Spot } from "./spots";
 import { BUSINESSES, BUSINESSES_UPDATED_AT } from "./businesses.lafayette";
 import { parseBusinessesPayload, type BusinessesPayload } from "./businessesSchema";
+import { supabase } from "../lib/supabase";
 
 type LoadState = {
   businesses: Spot[];
@@ -13,38 +14,14 @@ type LoadState = {
 };
 
 const STORAGE_KEY_PAYLOAD = "sipspot.businesses.payload.v1";
-const STORAGE_KEY_ETAG = "sipspot.businesses.etag.v1";
-
-const WEEKDAYS = new Set<Weekday>(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
-const TIME_RE = /^\d{2}:\d{2}$/;
-
-const isObject = (value: unknown): value is Record<string, unknown> =>
-  Boolean(value) && typeof value === "object";
-
-const isStringArray = (value: unknown): value is string[] =>
-  Array.isArray(value) && value.every((v) => typeof v === "string");
-
-const validateTimeWindow = (window: unknown): window is TimeWindow => {
-  if (!isObject(window)) return false;
-  if (!Array.isArray(window.days) || window.days.length === 0) return false;
-  if (!window.days.every((d) => typeof d === "string" && WEEKDAYS.has(d as Weekday))) return false;
-  if (typeof window.start !== "string" || !TIME_RE.test(window.start)) return false;
-  if (typeof window.end !== "string" || !TIME_RE.test(window.end)) return false;
-  if (!isStringArray(window.items)) return false;
-  return true;
-};
-
-const validatePayload = parseBusinessesPayload;
 
 type AsyncStorageLike = {
   getItem(key: string): Promise<string | null>;
   setItem(key: string, value: string): Promise<void>;
-  removeItem(key: string): Promise<void>;
 };
 
 const getAsyncStorage = (): AsyncStorageLike | null => {
   try {
-    // Avoid crashing if the native module isn't available (e.g. Expo Go mismatch / web).
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const mod = require("@react-native-async-storage/async-storage");
     return (mod?.default ?? mod) as AsyncStorageLike;
@@ -53,56 +30,57 @@ const getAsyncStorage = (): AsyncStorageLike | null => {
   }
 };
 
-async function readCachedPayload(): Promise<{ payload: BusinessesPayload; etag: string | null } | null> {
+async function readCachedPayload(): Promise<BusinessesPayload | null> {
   const storage = getAsyncStorage();
   if (!storage) return null;
-
-  const [payloadRaw, etag] = await Promise.all([
-    storage.getItem(STORAGE_KEY_PAYLOAD),
-    storage.getItem(STORAGE_KEY_ETAG),
-  ]);
-
-  if (!payloadRaw) return null;
+  const raw = await storage.getItem(STORAGE_KEY_PAYLOAD);
+  if (!raw) return null;
   try {
-    const json = JSON.parse(payloadRaw);
-    const validated = validatePayload(json as unknown);
-    if (!validated.ok) return null;
-    return { payload: validated.payload, etag };
+    const validated = parseBusinessesPayload(JSON.parse(raw) as unknown);
+    return validated.ok ? validated.payload : null;
   } catch {
     return null;
   }
 }
 
-async function writeCachedPayload(payload: BusinessesPayload, etag: string | null) {
+async function writeCachedPayload(payload: BusinessesPayload) {
   const storage = getAsyncStorage();
   if (!storage) return;
-
-  await Promise.all([
-    storage.setItem(STORAGE_KEY_PAYLOAD, JSON.stringify(payload)),
-    etag ? storage.setItem(STORAGE_KEY_ETAG, etag) : storage.removeItem(STORAGE_KEY_ETAG),
-  ]);
+  await storage.setItem(STORAGE_KEY_PAYLOAD, JSON.stringify(payload));
 }
 
-async function fetchRemotePayload(url: string, etag: string | null) {
-  const headers: Record<string, string> = { Accept: "application/json" };
-  if (etag) headers["If-None-Match"] = etag;
+async function fetchFromSupabase(): Promise<BusinessesPayload> {
+  const market = process.env.EXPO_PUBLIC_MARKET ?? "lafayette";
+  const { data, error } = await supabase.from("spots").select("*").eq("market", market);
 
-  const res = await fetch(url, { headers });
-  if (res.status === 304) return { type: "not_modified" as const };
-  if (!res.ok) return { type: "error" as const, error: `HTTP ${res.status}` };
+  if (error) throw new Error(error.message);
 
-  const json = (await res.json()) as unknown;
-  const validated = validatePayload(json);
-  if (!validated.ok) return { type: "error" as const, error: validated.error };
+  const businesses: Spot[] = (data ?? []).map((row) => ({
+    id: row.id as string,
+    name: row.name as string,
+    location: {
+      latitude: (row.latitude as number | null) ?? 0,
+      longitude: (row.longitude as number | null) ?? 0,
+    },
+    address: (row.address as Spot["address"]) ?? null,
+    phone: (row.phone as string | null) ?? null,
+    website: (row.website as string | null) ?? null,
+    openingHours: (row.opening_hours as string | null) ?? null,
+    amenity: (row.amenity as string | null) ?? null,
+    cuisine: (row.cuisine as string | null) ?? null,
+    dailyDeals: (row.daily_deals as Spot["dailyDeals"]) ?? [],
+    happyHours: (row.happy_hours as Spot["happyHours"]) ?? [],
+    source: (row.source as Spot["source"]) ?? undefined,
+  }));
 
-  const newEtag = res.headers.get("etag");
-  return { type: "ok" as const, payload: validated.payload, etag: newEtag };
+  return { updatedAt: new Date().toISOString(), businesses };
 }
 
 export function useBusinesses() {
-  const bundled = useMemo<BusinessesPayload>(() => {
-    return { updatedAt: BUSINESSES_UPDATED_AT, businesses: BUSINESSES };
-  }, []);
+  const bundled = useMemo<BusinessesPayload>(
+    () => ({ updatedAt: BUSINESSES_UPDATED_AT, businesses: BUSINESSES }),
+    [],
+  );
 
   const [state, setState] = useState<LoadState>(() => ({
     businesses: bundled.businesses,
@@ -116,13 +94,11 @@ export function useBusinesses() {
     let cancelled = false;
 
     const run = async () => {
-      const remoteUrl = process.env.EXPO_PUBLIC_BUSINESSES_JSON_URL;
-
       const cached = await readCachedPayload();
       if (!cancelled && cached) {
         setState({
-          businesses: cached.payload.businesses,
-          updatedAt: cached.payload.updatedAt,
+          businesses: cached.businesses,
+          updatedAt: cached.updatedAt,
           source: "cache",
           error: null,
           loading: false,
@@ -131,28 +107,28 @@ export function useBusinesses() {
         setState((s) => ({ ...s, loading: false }));
       }
 
-      if (!remoteUrl) return;
-
-      const etag = cached?.etag ?? null;
-      const fetched = await fetchRemotePayload(remoteUrl, etag);
-      if (cancelled) return;
-
-      if (fetched.type === "ok") {
+      try {
+        const payload = await fetchFromSupabase();
+        if (cancelled) return;
         setState({
-          businesses: fetched.payload.businesses,
-          updatedAt: fetched.payload.updatedAt,
+          businesses: payload.businesses,
+          updatedAt: payload.updatedAt,
           source: "remote",
           error: null,
           loading: false,
         });
-        await writeCachedPayload(fetched.payload, fetched.etag ?? null);
-      } else if (fetched.type === "error") {
-        setState((s) => ({ ...s, error: fetched.error }));
+        await writeCachedPayload(payload);
+      } catch (err) {
+        if (!cancelled) {
+          setState((s) => ({
+            ...s,
+            error: err instanceof Error ? err.message : "Failed to fetch from Supabase",
+          }));
+        }
       }
     };
 
     void run();
-
     return () => {
       cancelled = true;
     };
