@@ -14,7 +14,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.flemingvincent.expo-supabase-starter"
+      "bundleIdentifier": "com.flemingvincent.expo-supabase-starter",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "SipSpot uses your location to show nearby happy hours and deals."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -24,6 +27,13 @@
       "edgeToEdgeEnabled": true,
       "package": "com.flemingvincent.exposupabasestarter"
     },
-    "plugins": []
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "SipSpot uses your location to show nearby happy hours and deals."
+        }
+      ]
+    ]
   }
 }

@@ -1,3 +1,34 @@
+/**
+ * data/useBusinesses.ts — Data-fetching hook for the spot list.
+ *
+ * Loading strategy (three layers, in order):
+ *
+ *   1. Bundled data (instant)
+ *      A static JSON snapshot baked into the app build. Always available,
+ *      never staleness-safe. File: data/businesses.lafayette.ts
+ *
+ *   2. AsyncStorage cache (fast, ~ms)
+ *      The last successful Supabase fetch is persisted locally under
+ *      STORAGE_KEY_PAYLOAD. On next launch, the cache is shown immediately
+ *      while a fresh fetch runs in the background.
+ *
+ *   3. Supabase fetch (authoritative, ~100-500 ms)
+ *      Queries the `spots` table filtered by EXPO_PUBLIC_MARKET. On success
+ *      the result replaces the cache and updates the UI.
+ *
+ * If the network fetch fails, the hook surfaces an `error` string but keeps
+ * showing whatever data was loaded from bundled or cache — the app stays
+ * usable offline.
+ *
+ * Returned state shape
+ * ────────────────────
+ *   businesses – the current list of Spot objects
+ *   updatedAt  – ISO timestamp of when the data was last refreshed
+ *   source     – "bundled" | "cache" | "remote" (useful for debugging)
+ *   error      – non-null if the Supabase fetch failed
+ *   loading    – true only during the very first load before any data is ready
+ */
+
 import { useEffect, useMemo, useState } from "react";
 
 import type { Spot } from "./spots";
@@ -13,6 +44,8 @@ type LoadState = {
   loading: boolean;
 };
 
+// AsyncStorage key for the cached payload. Bump the version suffix if the
+// payload schema changes in a breaking way to avoid parsing stale data.
 const STORAGE_KEY_PAYLOAD = "sipspot.businesses.payload.v1";
 
 type AsyncStorageLike = {
@@ -20,6 +53,8 @@ type AsyncStorageLike = {
   setItem(key: string, value: string): Promise<void>;
 };
 
+// Lazy-load AsyncStorage so the module works in environments where it's
+// not available (e.g. web previews or unit tests).
 const getAsyncStorage = (): AsyncStorageLike | null => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -30,6 +65,8 @@ const getAsyncStorage = (): AsyncStorageLike | null => {
   }
 };
 
+// Reads the cached payload from AsyncStorage and validates its shape.
+// Returns null if nothing is cached or if the cached data is malformed.
 async function readCachedPayload(): Promise<BusinessesPayload | null> {
   const storage = getAsyncStorage();
   if (!storage) return null;
@@ -43,18 +80,25 @@ async function readCachedPayload(): Promise<BusinessesPayload | null> {
   }
 }
 
+// Persists a successfully-fetched payload so it's available on the next launch.
 async function writeCachedPayload(payload: BusinessesPayload) {
   const storage = getAsyncStorage();
   if (!storage) return;
   await storage.setItem(STORAGE_KEY_PAYLOAD, JSON.stringify(payload));
 }
 
+// Fetches all spots for the configured market from Supabase and maps the raw
+// database rows into typed Spot objects. The market is set via .env:
+//   EXPO_PUBLIC_MARKET=lafayette  (default if not set)
 async function fetchFromSupabase(): Promise<BusinessesPayload> {
   const market = process.env.EXPO_PUBLIC_MARKET ?? "lafayette";
   const { data, error } = await supabase.from("spots").select("*").eq("market", market);
 
   if (error) throw new Error(error.message);
 
+  // Map raw Supabase rows → typed Spot objects.
+  // The `as` casts are safe because the DB schema enforces the types; we cast
+  // rather than validate here to keep this layer thin.
   const businesses: Spot[] = (data ?? []).map((row) => ({
     id: row.id as string,
     name: row.name as string,
@@ -70,6 +114,7 @@ async function fetchFromSupabase(): Promise<BusinessesPayload> {
     cuisine: (row.cuisine as string | null) ?? null,
     dailyDeals: (row.daily_deals as Spot["dailyDeals"]) ?? [],
     happyHours: (row.happy_hours as Spot["happyHours"]) ?? [],
+    includesFood: (row.includes_food as boolean | null) ?? false,
     source: (row.source as Spot["source"]) ?? undefined,
   }));
 
@@ -77,6 +122,7 @@ async function fetchFromSupabase(): Promise<BusinessesPayload> {
 }
 
 export function useBusinesses() {
+  // The bundled snapshot is the absolute fallback — it's always present.
   const bundled = useMemo<BusinessesPayload>(
     () => ({ updatedAt: BUSINESSES_UPDATED_AT, businesses: BUSINESSES }),
     [],
@@ -91,9 +137,11 @@ export function useBusinesses() {
   }));
 
   useEffect(() => {
+    // `cancelled` prevents state updates after the component unmounts.
     let cancelled = false;
 
     const run = async () => {
+      // Step 1 — show cached data immediately if available.
       const cached = await readCachedPayload();
       if (!cancelled && cached) {
         setState({
@@ -107,6 +155,7 @@ export function useBusinesses() {
         setState((s) => ({ ...s, loading: false }));
       }
 
+      // Step 2 — fetch fresh data from Supabase in the background.
       try {
         const payload = await fetchFromSupabase();
         if (cancelled) return;
@@ -119,6 +168,7 @@ export function useBusinesses() {
         });
         await writeCachedPayload(payload);
       } catch (err) {
+        // Network failure — keep showing cached/bundled data, surface the error.
         if (!cancelled) {
           setState((s) => ({
             ...s,

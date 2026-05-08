@@ -3,15 +3,18 @@
  * Parses lafayette_places.txt and upserts all spots into Supabase.
  *
  * Usage:
- *   node scripts/seed-supabase.mjs [path/to/lafayette_places.txt]
+ *   node scripts/seed-supabase.mjs                  # full upsert (overwrites existing)
+ *   node scripts/seed-supabase.mjs --sync            # insert NEW spots only, skip existing
+ *   node scripts/seed-supabase.mjs --sync path/to/lafayette_places.txt
+ *
+ * Use --sync whenever you add new restaurants to the text file and want to
+ * insert only the new entries without touching coordinates or edits already
+ * saved in the Supabase dashboard.
  *
  * Reads EXPO_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from your .env
  * file (or from the environment directly). The service role key is required to
  * bypass Row Level Security — find it in Supabase dashboard → Settings → API.
  * Never prefix it with EXPO_PUBLIC_ (it must stay server-side only).
- *
- * Spots are inserted with null lat/lng — update coordinates in the Supabase
- * dashboard after seeding, or re-run with a geocoded CSV.
  */
 
 import { readFileSync } from "fs";
@@ -245,8 +248,10 @@ function parseSpots(text) {
 // ---------------------------------------------------------------------------
 
 async function main() {
-  const filePath =
-    process.argv[2] ?? resolve(join(__dirname, "..", "lafayette_places.txt"));
+  const args = process.argv.slice(2);
+  const syncMode = args.includes("--sync");
+  const fileArg = args.find((a) => !a.startsWith("--"));
+  const filePath = fileArg ?? resolve(join(__dirname, "..", "lafayette_places.txt"));
 
   let text;
   try {
@@ -277,28 +282,52 @@ async function main() {
     });
   }
 
-  console.log(`Upserting ${rows.length} unique spots...`);
+  let toInsert = rows;
+
+  if (syncMode) {
+    // Fetch all existing IDs so we only insert genuinely new spots,
+    // leaving coordinates and any manual edits untouched.
+    console.log("Sync mode: fetching existing spot IDs from Supabase...");
+    const { data: existing, error: fetchError } = await supabase
+      .from("spots")
+      .select("id")
+      .eq("market", "lafayette");
+    if (fetchError) {
+      console.error(`Failed to fetch existing spots: ${fetchError.message}`);
+      process.exit(1);
+    }
+    const existingIds = new Set((existing ?? []).map((r) => r.id));
+    toInsert = rows.filter((r) => !existingIds.has(r.id));
+    console.log(
+      `  ${existingIds.size} already in database, ${toInsert.length} new spot${toInsert.length === 1 ? "" : "s"} to insert.`,
+    );
+    if (toInsert.length === 0) {
+      console.log("Nothing to insert. Database is up to date.");
+      return;
+    }
+  } else {
+    console.log(`Upserting ${rows.length} unique spots (full seed)...`);
+  }
 
   const CHUNK = 50;
-  for (let i = 0; i < rows.length; i += CHUNK) {
-    const chunk = rows.slice(i, i + CHUNK);
-    const { error } = await supabase.from("spots").upsert(chunk, { onConflict: "id" });
+  for (let i = 0; i < toInsert.length; i += CHUNK) {
+    const chunk = toInsert.slice(i, i + CHUNK);
+    const { error } = syncMode
+      ? await supabase.from("spots").insert(chunk)
+      : await supabase.from("spots").upsert(chunk, { onConflict: "id" });
     if (error) {
       console.error(`Error at offset ${i}: ${error.message}`);
       process.exit(1);
     }
-    console.log(`  ${Math.min(i + CHUNK, rows.length)} / ${rows.length}`);
+    console.log(`  ${Math.min(i + CHUNK, toInsert.length)} / ${toInsert.length}`);
   }
 
   console.log("Done!");
 
-  // Print a quick summary of how many had parsed deals
-  const withDeals = rows.filter((r) => r.daily_deals.length > 0 || r.happy_hours.length > 0);
+  const withDeals = toInsert.filter((r) => r.daily_deals.length > 0 || r.happy_hours.length > 0);
+  console.log(`  ${withDeals.length} new spots have parsed deals/happy hours.`);
   console.log(
-    `  ${withDeals.length} spots have parsed deals/happy hours.`,
-  );
-  console.log(
-    `  ${rows.length - withDeals.length} spots have name only (add coords + deals in the Supabase dashboard).`,
+    `  ${toInsert.length - withDeals.length} new spots have name only (add coords + deals in the Supabase dashboard).`,
   );
 }
 
