@@ -2,8 +2,9 @@ import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useMemo } from "react";
+import { useFonts, Pacifico_400Regular } from "@expo-google-fonts/pacifico";
 
 import { useBusinesses } from "./data/useBusinesses";
 import { useAuth } from "./data/useAuth";
@@ -93,12 +94,16 @@ function AppNavigator({ spotsWithDeals }: { spotsWithDeals: ReturnType<typeof us
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function App() {
+  const [fontsLoaded] = useFonts({ Pacifico_400Regular });
   const { businesses } = useBusinesses();
   const spotsWithDeals = businesses;
 
   // Auth and favorites are hoisted here so they're available app-wide via context.
   const auth = useAuth();
   const favorites = useFavorites(auth.user?.id ?? null);
+
+  // Render nothing until the custom font is ready — avoids a flash of unstyled text
+  if (!fontsLoaded) return <View style={{ flex: 1 }} />;
 
   return (
     <ThemeProvider>
