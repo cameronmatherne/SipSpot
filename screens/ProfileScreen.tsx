@@ -50,10 +50,18 @@ const makeStyles = (C: Theme) => StyleSheet.create({
     gap: 10,
     marginBottom: 6,
   },
+  profileLogoIconBg: {
+    width: 56,
+    height: 56,
+    borderRadius: 14,
+    backgroundColor: "#0f1117",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+  },
   profileLogoIcon: {
     width: 56,
     height: 56,
-    backgroundColor: "transparent",
   },
   profileLogoText: {
     fontSize: 34,
@@ -467,11 +475,13 @@ function ProfileScreen({ spots }: { spots: Spot[] }) {
       >
         <ScrollView style={{ backgroundColor: C.bg }} contentContainerStyle={styles.profileScrollContent} keyboardShouldPersistTaps="handled">
           <View style={styles.profileLogoRow}>
-            <Image
-              source={require("../assets/app-icon-transparent.png")}
-              style={styles.profileLogoIcon}
-              resizeMode="contain"
-            />
+            <View style={styles.profileLogoIconBg}>
+              <Image
+                source={require("../assets/app-icon-transparent.png")}
+                style={styles.profileLogoIcon}
+                resizeMode="contain"
+              />
+            </View>
             <Text style={styles.profileLogoText}>SipSpot</Text>
           </View>
           <Text style={styles.profileTagline}>Save your favorite happy hours.</Text>
