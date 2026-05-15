@@ -53,6 +53,7 @@ const makeStyles = (C: Theme) => StyleSheet.create({
   profileLogoIcon: {
     width: 56,
     height: 56,
+    backgroundColor: "transparent",
   },
   profileLogoText: {
     fontSize: 34,
@@ -464,7 +465,7 @@ function ProfileScreen({ spots }: { spots: Spot[] }) {
         style={styles.profileContainer}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <ScrollView contentContainerStyle={styles.profileScrollContent} keyboardShouldPersistTaps="handled">
+        <ScrollView style={{ backgroundColor: C.bg }} contentContainerStyle={styles.profileScrollContent} keyboardShouldPersistTaps="handled">
           <View style={styles.profileLogoRow}>
             <Image
               source={require("../assets/app-icon-transparent.png")}
