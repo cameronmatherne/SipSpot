@@ -51,8 +51,8 @@ const makeStyles = (C: Theme) => StyleSheet.create({
     marginBottom: 6,
   },
   profileLogoIcon: {
-    width: 40,
-    height: 40,
+    width: 56,
+    height: 56,
   },
   profileLogoText: {
     fontSize: 34,
@@ -150,14 +150,13 @@ const makeStyles = (C: Theme) => StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: C.accentDark,
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
   },
   profileAvatarIcon: {
-    width: 36,
-    height: 36,
+    width: 52,
+    height: 52,
   },
   profileHeaderText: {
     flex: 1,
