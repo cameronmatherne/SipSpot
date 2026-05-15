@@ -49,8 +49,11 @@ const makeStyles = (C: Theme) => StyleSheet.create({
     top: 14,
     left: 0,
     right: 0,
+  },
+  mapFilterRowContent: {
     flexDirection: "row",
     justifyContent: "center",
+    paddingHorizontal: 12,
     gap: 8,
   },
   mapFilterPill: {
@@ -185,13 +188,15 @@ const makeStyles = (C: Theme) => StyleSheet.create({
   },
 });
 
+type MapFilter = "all" | "live";
+
 function ExploreScreen({ spots }: { spots: Spot[] }) {
   const { C, mode } = useTheme();
   const styles = useMemo(() => makeStyles(C), [C]);
   const now = new Date();
   const today = WEEKDAY_ORDER[now.getDay()];
   const [selectedSpot, setSelectedSpot] = useState<MapSpot | null>(null);
-  const [filterLive, setFilterLive] = useState(false);
+  const [filter, setFilter] = useState<MapFilter>("all");
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [locationDenied, setLocationDenied] = useState(false);
   const mapRef = useRef<MapView>(null);
@@ -228,8 +233,8 @@ function ExploreScreen({ spots }: { spots: Spot[] }) {
       return { ...spot, hasActiveDailyDeal, hasActiveHappyHour, todayDeals, todayHappyHours };
     });
 
-  const liveCount = mapSpots.filter((s) => s.hasActiveDailyDeal || s.hasActiveHappyHour).length;
-  const displaySpots = filterLive
+  const liveCount    = mapSpots.filter((s) => s.hasActiveDailyDeal || s.hasActiveHappyHour).length;
+  const displaySpots = filter === "live"
     ? mapSpots.filter((s) => s.hasActiveDailyDeal || s.hasActiveHappyHour)
     : mapSpots;
 
@@ -264,22 +269,24 @@ function ExploreScreen({ spots }: { spots: Spot[] }) {
       </MapView>
 
       <View style={styles.mapFilterRow}>
-        <Pressable
-          style={[styles.mapFilterPill, !filterLive && styles.mapFilterPillActive]}
-          onPress={() => setFilterLive(false)}
-        >
-          <Text style={[styles.mapFilterPillText, !filterLive && styles.mapFilterPillTextActive]}>
-            All  {mapSpots.length}
-          </Text>
-        </Pressable>
-        <Pressable
-          style={[styles.mapFilterPill, filterLive && styles.mapFilterPillActive]}
-          onPress={() => setFilterLive(true)}
-        >
-          <Text style={[styles.mapFilterPillText, filterLive && styles.mapFilterPillTextActive]}>
-            Live Now  {liveCount}
-          </Text>
-        </Pressable>
+        <View style={styles.mapFilterRowContent}>
+          {(
+            [
+              { key: "all",  label: "All",      count: mapSpots.length },
+              { key: "live", label: "Live Now",  count: liveCount },
+            ] as { key: MapFilter; label: string; count: number }[]
+          ).map(({ key, label, count }) => (
+            <Pressable
+              key={key}
+              style={[styles.mapFilterPill, filter === key && styles.mapFilterPillActive]}
+              onPress={() => setFilter(key)}
+            >
+              <Text style={[styles.mapFilterPillText, filter === key && styles.mapFilterPillTextActive]}>
+                {label}  {count}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
       </View>
 
       {userLocation && !locationDenied ? (

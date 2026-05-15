@@ -177,7 +177,6 @@ function DealsScreen({ spots }: { spots: Spot[] }) {
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [dealFilter, setDealFilter] = useState<"all" | "hh" | "specials" | "both">("all");
-  const [filterIncludesFood, setFilterIncludesFood] = useState(false);
   // Spots removed optimistically while DELETE is in-flight; rolled back on error.
   const [deletedIds, setDeletedIds] = useState<Set<string>>(() => new Set());
   // Spots patched optimistically after a successful PATCH response.
@@ -274,13 +273,24 @@ function DealsScreen({ spots }: { spots: Spot[] }) {
   const liveRows = filteredRows
     .filter((r) => Boolean(r.item.activeHappyHourWindow) || r.item.activeDailySpecial)
     .filter((r) => {
-      if (dealFilter === "hh") return Boolean(r.item.activeHappyHourWindow);
-      if (dealFilter === "specials") return r.item.activeDailySpecial;
-      if (dealFilter === "both") return Boolean(r.item.activeHappyHourWindow) && r.item.activeDailySpecial;
+      // "hh" and "specials" are strictly exclusive — spots with both active
+      // at the same time are excluded from each individual filter.
+      if (dealFilter === "hh")      return Boolean(r.item.activeHappyHourWindow) && !r.item.activeDailySpecial;
+      if (dealFilter === "specials") return r.item.activeDailySpecial && !Boolean(r.item.activeHappyHourWindow);
+      if (dealFilter === "both")    return Boolean(r.item.activeHappyHourWindow) && r.item.activeDailySpecial;
       return true;
     })
-    .filter((r) => !filterIncludesFood || Boolean(r.item.includesFood));
-  const notLiveRows = filteredRows.filter((r) => !(Boolean(r.item.activeHappyHourWindow) || r.item.activeDailySpecial));
+
+  // For Not Live rows, filter by what type the spot has scheduled today
+  // (not active status, since nothing is active by definition in this section).
+  const notLiveRows = filteredRows
+    .filter((r) => !(Boolean(r.item.activeHappyHourWindow) || r.item.activeDailySpecial))
+    .filter((r) => {
+      if (dealFilter === "hh")       return r.item.happyHourWindows.length > 0 && r.item.dailySpecialItems.length === 0;
+      if (dealFilter === "specials") return r.item.dailySpecialItems.length > 0 && r.item.happyHourWindows.length === 0;
+      if (dealFilter === "both")     return r.item.happyHourWindows.length > 0 && r.item.dailySpecialItems.length > 0;
+      return true;
+    });
 
   const sections: DealsAndHappyHourSection[] = [
     {
@@ -378,16 +388,6 @@ function DealsScreen({ spots }: { spots: Spot[] }) {
                 </Pressable>
               );
             })}
-            <View style={{ height: 1, backgroundColor: styles.filterModalOption.borderBottomColor, marginVertical: 8 }} />
-            <Pressable
-              style={[styles.filterModalOption, { borderBottomWidth: 0 }]}
-              onPress={() => setFilterIncludesFood((v) => !v)}
-            >
-              <Text style={[styles.filterModalOptionText, filterIncludesFood && styles.filterModalOptionTextActive]}>
-                Includes Food
-              </Text>
-              {filterIncludesFood ? <Ionicons name="checkmark" size={18} color={C.accent} /> : null}
-            </Pressable>
           </View>
         </Pressable>
       </Modal>
@@ -448,7 +448,7 @@ function DealsScreen({ spots }: { spots: Spot[] }) {
                       <Ionicons
                         name="options-outline"
                         size={22}
-                        color={dealFilter !== "all" || filterIncludesFood ? C.accent : C.textMuted}
+                        color={dealFilter !== "all" ? C.accent : C.textMuted}
                       />
                     </Pressable>
                     {canEdit ? (
@@ -475,7 +475,7 @@ function DealsScreen({ spots }: { spots: Spot[] }) {
               </View>
               {section.key === "live" && section.data.length === 0 ? (
                 <Text style={styles.liveEmptyText}>
-                  {dealFilter === "all" && !filterIncludesFood
+                  {dealFilter === "all"
                     ? "No deals currently active."
                     : "No deals currently active with selected filter."}
                 </Text>

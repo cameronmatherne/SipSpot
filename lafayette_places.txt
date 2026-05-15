@@ -1,6 +1,5 @@
 
 4509 Lounge
-
 Adopted Dog Brewing
 Agave Mexican Grill & Cantina
 	Happy Hour: 
@@ -26,8 +25,12 @@ Artmosphere
 	$3 wells
 	$2.50 domestics
 	$3 cherry bombs  
+
+
 Athena Greek and Lebanese Food
+
 BJ's Pizza & Deli
+
 BJ's Restaurant & Brewhouse
 	Daily specials:
 	Monday: $19.99 Large Deep Dish or $14.99 Tavern-Cut Pizza, $6 BJ's margarita 
@@ -46,15 +49,13 @@ BJ's Restaurant & Brewhouse
 	$7 Select appetizers & personal deep dish Pizza
 	$1 off BJ's seasonal draft beers 
 
-
-
 Baba Kabab
 Bailey's Tandoori Grill
 	Food specials:
 	Sunday 11am-2:30pm
 	Sunday Buffet 
 
-Bistrology Breakfast Brunch & Dinner - unfinished 
+Bistrology Breakfast Brunch & Dinner 
 Blanchard's Barbeque
 Blu Basil Asian Fusion
 	Happy hour:
@@ -120,6 +121,9 @@ Burgersmith Lafayette
 
 CENTRAL Pizza + Bar Lafayette
 Cactus Mexican Grill
+	Daily specials:
+	Tuesday: $2.25 tacos, 2x1 margaritas 
+
 Cafe Bella
 
 	Happy hour:
@@ -238,13 +242,13 @@ Dons Seafood - Lafayette
 Dumpling Hour
 
 Dwight's Restaurant
-	Weekly specials: 
+	Daily specials: 
 	Wednesday: $8.99 1/2 dozen on the half shell oysters, 
 				$12.99 dozen on the half shell oysters
 	Thursday: 2 for 1 frozen margaritas, 1 lb boiled shrimp - $12.99
 
 El Paso Mexican Grill Ambassador
-	Weekly specials:
+	Daily specials:
 	Monday: 2 for 1 12oz margaritas on the rocks all day 
 	Tuesday: 3pm-10pm, $2.55 grilled chicken or steak tacos & $1.85 beef, carnitas, beans, or shredded chicken tacos & $1.99 draft beer 
 	Wednesday: 3pm-10pm chicken or steak fajitas for only $13.99, medium margaritas regular flavors $8.99
@@ -265,7 +269,7 @@ Fezzo's Seafood, Steakhouse & Oyster Bar
 	Mixed cocktails and appetizers from $4 to $6 
 
 Fiery Crab Seafood Restaurant And Bar
-	Weekly special:
+	Daily special:
 	Monday: 1/2 lb black mussels, 1/2 lb headless shrimp, 1 cluster snow crab - $32.99
 	Tuesday: 1/2 lb king crab, 1/2 lb headless shrimp, 1 cluster snow crab - $65.99
 	Wednesday: 1 lb snow crab, 1 lb headless shrimp - $44.99
@@ -297,7 +301,7 @@ Hot Food Express
 Hub City Diner
 Izumi Ramen (Noodle Bar & Grill)
 Jim Deggys (Lafayette) Brick Oven Pizza & Brewery
-	Weekly specials:
+	Daily specials:
 	Monday: kids eat free
 	Tuesday: kids eat free
 
@@ -311,7 +315,7 @@ KOK Wings & Things
 Kasai Steakhouse & Sushi
 Khan Mongolian Grill
 La Carreta
-	Weekly specials:
+	Daily specials:
 	Monday: $6 Mojitos, lunch menu all day
 	Tuesday: $3 tacos, $8 taco salads
 	Wednesday: Happy hour all day 
@@ -326,104 +330,188 @@ La Carreta
 
 La Fonda
 
-La Pagua
+
 
 La Papa Loca
+	Happy hour
+	Monday-Friday 3-6pm 
+	2x1 margaritas and micheladas 
+
+
+La Espuela Cantina & Grill
+	Daily Specials:
+	Tuesday: $1.99 tacos, $3.99 margaritas 
+
 
 La Pizzeria Lafayette
+	Daily specials: 
+	Tuesday: 25% off pizzas and calzones
+	Wednesday: All Day happy hour 
 
-La Zamba Mexican Grill
-
-Lagneaux's
-
-Latin Cuisine 504
-
-Laura's Two
-
-LeBouef's Restaurant
-
-Lil Daddy's Bar-B-Q
+	Happy hour:
+	Monday-Friday, 2-5pm
+	1/2 off wines by the bottle 
+	$4 house wine by the glass 
+	discounted crafted cocktails 
 
 Little hacienda mexican restaurant
+	Weekly specials:
+	Tuesday: 2x1 margaritas 
 
 LongHorn Steakhouse
-
-Louisiana Crawfish Time
-
 Louisiana Poboys 
 
-Magnolia Pantry
+Market Eatz
+	Daily specials	
+	Tuesday: $4 tacos, $14 taco trios 
+	Wednesday: $2 off all signature burgers 
+	Friday: $6 frozen drinks 
+
+	Happy hour:
+	Monday-friday 3-6pm 
+	$6 frozens and wells
+	$1 off drafts 
+	$3 domestic bottles
+	$4 imports bottles 
+	$7 onion rings
+	$6 mac and cheese 
+	$7 sweet fries 
+	$5 market single slider 
+	$5 street corn
+	$4 tacos 
 
 Mandez's Seafood Bar & Grill
+	Daily specials:
+	Tuesday:
+	$2 off margaritas
+	3 tacos for $10.99
 
 Marcello's
+	Happy hour:
+	Monday-Friday 3-6pm
+	Appetizers starting at $8 
+	Select drinks & wine for $6 
+	$3 Beers 
 
 Marley's Sports Bar
+	Weeky specials:
+	Wednesday:
+	$1 LEMON DROPS & VEGAS BOMBS
+	$5 HIGH NOON 
+	$5 SURFSIDE 
+	$5 TITO’S DRINKS 
+	$5 GOOD BOY LEMONADE 
+	$5 FROZEN MARGARITAS 
+
+	Thursday:
+	$5 LIQUID MARIJUANA 
+	$5 BAD BITCH 
+	$5 FROZEN MARGARITAS 
+
+	Friday:
+	$5 CAPTAIN MORGAN HURRICANES 
+	$10 HURRICANE/MIMOSA BUCKETS 
+
+	Saturday:
+	$5 CAPTAIN MORGAN HURRICANES
 
 Masala Indian Kitchen
-
 Mazen Grill
 
 Mercy Kitchen
+	Happy hour:
+	Monday-Friday 2-6pm	
+	$8 Specialty cocktails 
+	$6 Glasses of wine 
+	Discounted Draft beer
+	Discounted appetizers 
 
 Mezcal Mexican Restaurant
+	Happy hour:
+	7 days a week, all day
+	2x1 margaritas 
+
+	Daily specials: 
+	Monday: $13.99 ACP (happy plate)
+	Tuesday: 15 tacos for $22.99
+	Wednesday: Fatijas (steak,chicken, mix) for $13.99
+	Thursday: Fatijas (steak,chicken, mix) for $13.99
+	Friday: Chimichanga (chicken or steak) for $13.99
+	Saturday: 15% off for students with ID 
+	Sunday: 15% off with church bulliten 
 
 NJOY Curry Masala
+	Daily specials: 
 
 New Orleans Original Daiquiris
-
 Nhi Taste of Asia
-
 Noah's Cafe
-
 Noodles & Dumplings
-
-Off The Hook
-
-Oishi Sushi
-
-Olde Tyme Grocery
-
 Osaka Lafayette
-
 Outback Steakhouse
-
-PALMYRE
+PALMYRE - may be inaccurate
+	Happy hour:
+	Tuesday–Thursday 3–6pm, Fridays 2-6pm
+	$9 glass wines
+	$10 espresso martinis
+	$10 Little Palm
+	$10 Esprit de Jour (seasonal rotating cocktail)
+	Discounted bites 
 
 POUR Restaurant & Bar
+	Daily specials:
+	Tuesday: $10 tacos, $5 margaritas 
+	Wednesday: Ladies Night - $5 Martinis 
 
-Pamplona Tapas Bar
+	Happy hour:
 
-Panda Express
 
-Panera Bread
+Pamplona Tapas Bar - may be incorrect 
+	Happy hour:
+	Every day, 2-6pm
+	$4 Sangria 
+	$4 Well cocktails
+	$4 House wine
+	$4 Domestic beer 
+
+	Daily specials: 
+	Tuesday: $5 Sazerac cocktail, 1/2 off all charbroiled oysters 
+	Wednesday: $10 Aviation cocktail, $1 off raw oysters
+	Thursday: $5 Sidecar cocktail, $1 off raw oysters
+	Friday: $5 Old Fashioned, $1 off raw oysters
+	Saturday: $5 Whiskey sour, $1 off raw oysters 
 
 Parish Biscuit Company
-
 Park Bistro
-
-Pat's Downtown
-
 Patacon Latin Cuisine
 
-Pedro's Tacos & Tequila Bar Lafayette
+Pedro's Tacos & Tequila Bar Lafayette	
+	Daily specials: 
+	Monday: 2x1 mojitos all day 
+	Tuesday: $2.50 tacos 
+	Wednesday: $14.99 fajitas 
+	Thursday: 2x1 margaritas all day 
 
 Pete's On Johnston
+	Daily Specials:
+	Monday: BOGO frozen margaritas, $5 Lil Pete's 
+	Tuesday: $2 off Espresso martini, $2 off Big Pete 
+	Wednesday: $5 off wine (375 ml), $5 off RC Ranch wagyu burgers 
+	Thursday: BOGO Yuengling, one dozen wings for the price of a half dozen 
+	Friday: BOGO spiked seltzers, frozen palomas, and frozen Jim Beam Cold Fashioneds
+	Saturday: BOGO spiked seltzers, frozen palomas, and frozen Jim Beam Cold Fashioneds
+	Sunday: BOGO spiked seltzers, frozen palomas, and frozen Jim Beam Cold Fashioneds
 
-Pho Hoa + Jazen Tea (Lafayette)
+	Happy hour:
+	Monday-Friday 11am-6pm 
+	$2 off appetizers 
+	$2 off Pete's craft cocktails 
+	BOGO 16oz & 22oz draft of 12oz bottle  
 
 Pho Home - Lafayette
-
 Pimon Thai
-
 Pizza Village
-
-Playa Bowls
-
-Poké Geaux
-
 Poor Boy's Riverside Inn
-
 Pop's Poboys
 
 Poseidon's | Greek Restaurant
@@ -434,17 +522,17 @@ Prejeans
 
 Rachael's Cafe
 
-Renaissance Market & Brasserie
-
 Rochetto's Pizzeria
 
 Rock-n-Sake Bar & Sushi
-
-Rocket 87
+	Daily specials:
+	Tuesday:  monthly roll for just $6 with the purchase of any regular-priced roll.
+	Thursday: discounted wine bottles 
 
 Roly Poly Sandwiches
-
 Romacelli Bistro e Vino
+	Daily specials 
+	Thursday: Ladies night - $5 margaritas, mules, wine, and more 
 
 Ruby Slipper
 
@@ -455,6 +543,18 @@ Ruth's Chris Steak House
 Saigon Noodles
 
 Saltgrass Steak House
+	Happy hour: 
+	Monday-friday 3-7pm
+	$3 12oz domestic draft and bottled beer 
+	$4 12oz craft & imported draft & bottled beer
+	$4 house margaritas
+	$4 well mixed drinks 
+	$6 white cosmo / pomegranite mojito 
+	$7 specialty cocktails 
+	$8 bourbon old fashioned / frozen crown & coke 
+	discounted appetizers 
+	discounted white/red glasses
+
 
 Samurai Sushi Bar
 
@@ -470,53 +570,79 @@ Shane's Famous Quesadilla Burgers
 
 Shane’s loaded Mac bar
 
-Sharks Fish & Chicken Louisiana Lafayette
-
-Shawarma Guys
-
 Shinto Japanese Restaurant
 
 Siro's Bistro
 
 Social Southern Table & Bar
+	Daily specials
+	Wednesday: $7 Bee old fashioned 
+
+	Happy hour:
+	Tuesday-Friday 3-6:30pm
+	half off fried green tomatoes 
+	$3 off social cocktails 
+	half off bottles of wine ($55+)
 
 Sombreros Mexican Kitchen & Cantina
-
-Somewheres Else Bar and Grill
-
-Soul Haus Kitchen
+	Daily specials:
+	Tuesday: Kids 12 & under eat FREE from children's menu when accompanied by an adult ordering an entree. Two kids per adult, dine in only.
+	Wednesday: $5 small house margaritas 
+	Thursday: $9 Top shelf margaritas 
+	Friday: $9 mojitos 
 
 Spicy House
 
 Spoonbill Watering Hole & Restaurant
+	Daily specials:
+	Tuesday: half off margaritas, half off oysters & snacks 
+	Wednesday: $5 frozen drinks, half off oysters & snacks 
+	Thursday: half off draft beer, half off oysters & snacks 
+	Friday: $5 old fashioned
 
-Steven’s Fine Food & Seafood Market
+	happy hour:
+	tuesday-friday 3-6pm
+	half off oysters & snacks 
 
 Sunday's
-
-Super Chix - Chicken & Custard
+	Daily specials 
+	Wednesday: bottomless mimosas, 10:30-3pm
+	Thursday: $5 bites & drinks, 3-9pm 
+	Sunday: bottomless mimosas all day 
 
 Super Taters...And More!
 
 Superior Grill Lafayette
+	Happy hour:
+	every day 
+	large for the price of small margaritas 
 
 Sushi Masa Lafayette
+	Happy hour
+	mon-thursday 3-6pm
+	$3 house wines 
+	$3.50 draft beers 
+	$5 large house sake 
+	$3 small house sake 
 
 T-Coon's Restaurant
 
 Taco Sisters
+	Daily specials:
+	Tuesday: 1/2 off cocktails and specials, 6-8pm 
 
 Tampico's
-
-Telly`s Place LLC
+	Daily specials: 
+	Monday: $3 12oz margaritas
 
 Texas Roadhouse
-
-Thai With Love
 
 The Boardroom
 
 The Bulldog
+	Happy hour:
+	7 days a week, 4-9pm
+	2-4-1 drinks 
 
 The Cajun Table
 
@@ -538,45 +664,103 @@ The Ruins
 
 The Salad Station
 
-The Tap Room
+The Tap Room - River Ranch
+	Daily specials:
+	Monday: half off tito's, boneless wings, and flatbreads
+	Wednesday: Ladies night - half off food and drinks for ladies 
+	Thursday: $5 Jack & crown 
+	Friday: $5 bomb shots, 10pm-close 
+	Saturday: $5 bomb shots, 10pm-close 
+	Sunday: $5 bloody mary's, $5 mimosas, $10 domestic buckets 
+
+	Happy hour:
+	monday-thursday 3-6pm, friday 12-6pm
+	$1 off draft 
+	$2 off specialty cocktails 
+	$2 off wines by the glass 
 
 The Toasted Yolk Cafe
 
 The Yard Goat
+	Daily specials:
+	Monday: all night happy hour 
+
+	Happy hour
+	Monday 4pm-close, Tuesday-Friday 4-7pm
+	Double for the price of a single mixed drinks 
+	9oz wine for the price of a 6oz 
+	$1 off draft pints 
+
 
 Toasted Baguette
 
 Tokyo Japanese Steak House
+	Happy hour Mon-Thursday 4:30pm-7
+	2 for $10 Sutter Homes wine 
+	Bogo hot/cold sake 
+	BOGO select house cocktails
+	BOGO domestic beer 
+	2 Regular Rolls Combo For $14.99                                                                                                                      
+	2 Chef’s Special Roll Combo For $29.99
+
 
 Ton's Downtown Lafayette
 
 Tsubaki Sushi & Hibachi by Koi
 
 Tsunami Sushi Lafayette
+	Daily specials
+	Tuesday: Happy Hour from 3-9pm
+	Wednesday: 25% off all bottles of wine and sake 6-9pm 
+	Thursday: 1/2 off Hunks roll, 1/2 off Hung-lo roll 6-9pm 
+
+	Happy hour:
+	tuesday-friday 3-6pm 
+	$6 martinis 
+	$5 house wine 
+	$4 well singles & domestic bottles
+	25% off all rolls $10 and under 
+	half off select nigiri/sashimi 
+	half off smoked salt escolar, yuzu albacore & truffle salmon 
 
 Twin's Burgers and Sweets
 
 Uncle T's Oyster Bar
+	Weekly specials:
+	Monday: 1/2 off wings, $10 buckets of beer 
+
 
 Vallarta Mexican Grill
+	Weekly specials:
+	Monday: $9.99 chicken or steak fajitas, $9.99 margarita flights 
+	Tuesday: $8.99 street tacos trio, $2.99 16oz draft beer, $2 house tequila shots 
+	Wednesday: $5.99 28oz margaritas, $9.99 casa sampler, $2.99 cheese dip 
+	Thursday: $9.99 tortas, $8.99 palomas, $5.99 mezcal margaritas 
+	Saturday: $2.49 16oz margaritas, $2 hosue tequila shots, $2.99 16oz draft beer, $2.99 street tacos, $9.99 casa sampler
 
+	
 Vestal Restaurant
+	Happy hour: 
+	Tuesday-Friday 4-5:30pm 
+	Half off oysters, half off cocktails 
 
 Waffle House
 
 Walk-On's Sports Bistreaux
 
 Whiskey & Vine
+	Daily special:
+	Sunday: $15 bottomless brunch cocktails 
+
+	Happy hour: Mon-Thursday 3-6pm 
+	Friday 2-6pm
+	$5 appetizers 
+	$5 Cocktails
+	$5 wine glasses 
 
 Zea Rotisserie & Bar
 
-Zeus
-
-Zorbas
-
 iMonelli Restaurant
-
-ichiban Asian Cuisine
 
 la Madeleine
 

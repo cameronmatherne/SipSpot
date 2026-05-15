@@ -3,13 +3,17 @@
  * Parses lafayette_places.txt and upserts all spots into Supabase.
  *
  * Usage:
- *   node scripts/seed-supabase.mjs                  # full upsert (overwrites existing)
- *   node scripts/seed-supabase.mjs --sync            # insert NEW spots only, skip existing
- *   node scripts/seed-supabase.mjs --sync path/to/lafayette_places.txt
+ *   node scripts/seed-supabase.mjs                   # full upsert (overwrites everything)
+ *   node scripts/seed-supabase.mjs --sync             # insert NEW spots only, skip existing
+ *   node scripts/seed-supabase.mjs --sync-deals       # insert new spots AND refresh
+ *                                                     # daily_deals/happy_hours for all spots
+ *                                                     # that have data in the txt file;
+ *                                                     # never touches lat/lng or other fields
+ *   node scripts/seed-supabase.mjs --sync [path]      # supply alternate txt file path
  *
- * Use --sync whenever you add new restaurants to the text file and want to
- * insert only the new entries without touching coordinates or edits already
- * saved in the Supabase dashboard.
+ * Use --sync-deals whenever you have added deal/happy-hour data to the txt file
+ * for spots that already exist in Supabase (e.g. spots that were previously
+ * inserted with name-only and now have deals filled in).
  *
  * Reads EXPO_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from your .env
  * file (or from the environment directly). The service role key is required to
@@ -142,12 +146,15 @@ function parseDaysAndTimeLine(line) {
 }
 
 function parseDailySpecialLine(line) {
+  // "Monday: some text" — the colon is required to distinguish a day header
+  // from a continuation line.
   const m = line
     .trim()
-    .match(/^(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday):\s*(.+)$/i);
+    .match(/^(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)\s*:\s*(.*)$/i);
   if (!m) return null;
   const day = DAY_NAMES[m[1].toLowerCase()];
-  return { day, item: m[2].trim() };
+  const item = m[2].trim();
+  return { day, item: item || null }; // item may be empty (day header only)
 }
 
 function toSlug(name) {
@@ -226,15 +233,30 @@ function parseSpots(text) {
         flushHH();
         currentHH = { days: parsed.days, start: parsed.start, end: parsed.end, items: [] };
       } else if (currentHH) {
+        // Continuation / deal item line within the current HH window.
         currentHH.items.push(line);
       }
+      // Lines that look like section headers or are unparseable before any
+      // window header are silently skipped (e.g. bare "Happy hour:" line).
     } else if (section === "daily_deals") {
       const parsed = parseDailySpecialLine(line);
       if (parsed) {
         if (!current.daily_deals_map[parsed.day]) {
           current.daily_deals_map[parsed.day] = { items: [] };
         }
-        current.daily_deals_map[parsed.day].items.push(parsed.item);
+        // An empty item means it was a bare "Monday:" header — skip it.
+        if (parsed.item) {
+          current.daily_deals_map[parsed.day].items.push(parsed.item);
+        }
+        // Track the last-seen day so continuation lines can append to it.
+        current._lastDealDay = parsed.day;
+      } else if (current._lastDealDay) {
+        // Continuation line (e.g. a second indented line after "Thursday: …").
+        // Append it to the most recent day's items if it has actual content
+        // and doesn't look like a new section header.
+        if (line && !/^(happy\s*hour|(daily|weekly|food)\s*specials?)/i.test(line)) {
+          current.daily_deals_map[current._lastDealDay].items.push(line);
+        }
       }
     }
   }
@@ -250,6 +272,7 @@ function parseSpots(text) {
 async function main() {
   const args = process.argv.slice(2);
   const syncMode = args.includes("--sync");
+  const syncDealsMode = args.includes("--sync-deals");
   const fileArg = args.find((a) => !a.startsWith("--"));
   const filePath = fileArg ?? resolve(join(__dirname, "..", "lafayette_places.txt"));
 
@@ -264,7 +287,7 @@ async function main() {
   const rawSpots = parseSpots(text);
   console.log(`Parsed ${rawSpots.length} spots from text file.`);
 
-  // Build rows and deduplicate by id
+  // Build rows and deduplicate by id.
   const seen = new Set();
   const rows = [];
   for (const spot of rawSpots) {
@@ -282,11 +305,81 @@ async function main() {
     });
   }
 
-  let toInsert = rows;
+  const CHUNK = 50;
 
+  // ── --sync-deals ────────────────────────────────────────────────────────────
+  // Insert brand-new spots AND update daily_deals/happy_hours for existing
+  // spots that have deal data in the txt file. Never touches lat/lng.
+  if (syncDealsMode) {
+    console.log("Sync-deals mode: fetching existing spots from Supabase...");
+    const { data: existing, error: fetchError } = await supabase
+      .from("spots")
+      .select("id")
+      .eq("market", "lafayette");
+    if (fetchError) {
+      console.error(`Failed to fetch existing spots: ${fetchError.message}`);
+      process.exit(1);
+    }
+    const existingIds = new Set((existing ?? []).map((r) => r.id));
+
+    const toInsert = rows.filter((r) => !existingIds.has(r.id));
+    const toUpdateDeals = rows.filter(
+      (r) =>
+        existingIds.has(r.id) &&
+        (r.daily_deals.length > 0 || r.happy_hours.length > 0),
+    );
+
+    console.log(`  ${existingIds.size} already in database.`);
+    console.log(`  ${toInsert.length} new spot(s) to insert.`);
+    console.log(`  ${toUpdateDeals.length} existing spot(s) with deals to refresh.`);
+
+    // Insert new spots.
+    if (toInsert.length > 0) {
+      console.log("\nInserting new spots...");
+      for (let i = 0; i < toInsert.length; i += CHUNK) {
+        const chunk = toInsert.slice(i, i + CHUNK);
+        const { error } = await supabase.from("spots").insert(chunk);
+        if (error) {
+          console.error(`Insert error at offset ${i}: ${error.message}`);
+          process.exit(1);
+        }
+        console.log(`  ${Math.min(i + CHUNK, toInsert.length)} / ${toInsert.length}`);
+      }
+    }
+
+    // Update deals/happy_hours only for existing spots.
+    if (toUpdateDeals.length > 0) {
+      console.log("\nRefreshing deals/happy_hours for existing spots...");
+      for (let i = 0; i < toUpdateDeals.length; i += CHUNK) {
+        const chunk = toUpdateDeals.slice(i, i + CHUNK);
+        // upsert with onConflict:id will update only the supplied columns.
+        const { error } = await supabase.from("spots").upsert(
+          chunk.map((r) => ({
+            id: r.id,
+            name: r.name,
+            market: "lafayette",
+            daily_deals: r.daily_deals,
+            happy_hours: r.happy_hours,
+          })),
+          { onConflict: "id" },
+        );
+        if (error) {
+          console.error(`Update error at offset ${i}: ${error.message}`);
+          process.exit(1);
+        }
+        console.log(`  ${Math.min(i + CHUNK, toUpdateDeals.length)} / ${toUpdateDeals.length}`);
+        // Log which spots were updated so you can verify.
+        chunk.forEach((r) => console.log(`    ✓ ${r.name}`));
+      }
+    }
+
+    console.log("\nDone!");
+    return;
+  }
+
+  // ── --sync ──────────────────────────────────────────────────────────────────
+  // Insert NEW spots only; never touch existing rows.
   if (syncMode) {
-    // Fetch all existing IDs so we only insert genuinely new spots,
-    // leaving coordinates and any manual edits untouched.
     console.log("Sync mode: fetching existing spot IDs from Supabase...");
     const { data: existing, error: fetchError } = await supabase
       .from("spots")
@@ -297,38 +390,44 @@ async function main() {
       process.exit(1);
     }
     const existingIds = new Set((existing ?? []).map((r) => r.id));
-    toInsert = rows.filter((r) => !existingIds.has(r.id));
+    const toInsert = rows.filter((r) => !existingIds.has(r.id));
     console.log(
-      `  ${existingIds.size} already in database, ${toInsert.length} new spot${toInsert.length === 1 ? "" : "s"} to insert.`,
+      `  ${existingIds.size} already in database, ${toInsert.length} new spot(s) to insert.`,
     );
     if (toInsert.length === 0) {
       console.log("Nothing to insert. Database is up to date.");
       return;
     }
-  } else {
-    console.log(`Upserting ${rows.length} unique spots (full seed)...`);
+    for (let i = 0; i < toInsert.length; i += CHUNK) {
+      const chunk = toInsert.slice(i, i + CHUNK);
+      const { error } = await supabase.from("spots").insert(chunk);
+      if (error) {
+        console.error(`Error at offset ${i}: ${error.message}`);
+        process.exit(1);
+      }
+      console.log(`  ${Math.min(i + CHUNK, toInsert.length)} / ${toInsert.length}`);
+    }
+    console.log("Done!");
+    const withDeals = toInsert.filter((r) => r.daily_deals.length > 0 || r.happy_hours.length > 0);
+    console.log(`  ${withDeals.length} new spot(s) have parsed deals/happy hours.`);
+    console.log(
+      `  ${toInsert.length - withDeals.length} new spot(s) have name only (add coords + deals in the Supabase dashboard).`,
+    );
+    return;
   }
 
-  const CHUNK = 50;
-  for (let i = 0; i < toInsert.length; i += CHUNK) {
-    const chunk = toInsert.slice(i, i + CHUNK);
-    const { error } = syncMode
-      ? await supabase.from("spots").insert(chunk)
-      : await supabase.from("spots").upsert(chunk, { onConflict: "id" });
+  // ── full upsert (default) ───────────────────────────────────────────────────
+  console.log(`Upserting ${rows.length} unique spots (full seed, overwrites everything)...`);
+  for (let i = 0; i < rows.length; i += CHUNK) {
+    const chunk = rows.slice(i, i + CHUNK);
+    const { error } = await supabase.from("spots").upsert(chunk, { onConflict: "id" });
     if (error) {
       console.error(`Error at offset ${i}: ${error.message}`);
       process.exit(1);
     }
-    console.log(`  ${Math.min(i + CHUNK, toInsert.length)} / ${toInsert.length}`);
+    console.log(`  ${Math.min(i + CHUNK, rows.length)} / ${rows.length}`);
   }
-
   console.log("Done!");
-
-  const withDeals = toInsert.filter((r) => r.daily_deals.length > 0 || r.happy_hours.length > 0);
-  console.log(`  ${withDeals.length} new spots have parsed deals/happy hours.`);
-  console.log(
-    `  ${toInsert.length - withDeals.length} new spots have name only (add coords + deals in the Supabase dashboard).`,
-  );
 }
 
 main().catch((err) => {

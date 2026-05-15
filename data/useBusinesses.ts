@@ -115,6 +115,9 @@ async function fetchFromSupabase(): Promise<BusinessesPayload> {
     dailyDeals: (row.daily_deals as Spot["dailyDeals"]) ?? [],
     happyHours: (row.happy_hours as Spot["happyHours"]) ?? [],
     includesFood: (row.includes_food as boolean | null) ?? false,
+    rating: (row.rating as number | null) ?? null,
+    reviewCount: (row.review_count as number | null) ?? null,
+    priceLevel: (row.price_level as Spot["priceLevel"]) ?? null,
     source: (row.source as Spot["source"]) ?? undefined,
   }));
 

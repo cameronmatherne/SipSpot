@@ -97,6 +97,11 @@ export type Spot = {
 
   includesFood?: boolean;
 
+  // Google Places data — populated by scripts/fetch-ratings.mjs
+  rating?: number | null;       // 1.0–5.0, e.g. 4.2
+  reviewCount?: number | null;  // total review count, e.g. 312
+  priceLevel?: "$" | "$$" | "$$$" | "$$$$" | null; // Google price category
+
   // Core deal data — what the app actually displays
   dailyDeals: DailyDeal[];
   happyHours: TimeWindow[];

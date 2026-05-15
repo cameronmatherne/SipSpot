@@ -51,7 +51,23 @@ const makeStyles = (C: Theme) => StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
     color: C.textPri,
+  },
+  ratingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 3,
+    marginTop: 2,
     marginBottom: 2,
+  },
+  ratingText: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: C.textSec,
+  },
+  ratingDot: {
+    fontSize: 12,
+    color: C.textMuted,
+    marginHorizontal: 1,
   },
   cardBookmarkBtn: {
     padding: 4,
@@ -214,6 +230,29 @@ function DealsCard({
       <View style={styles.cardRow}>
         <View style={styles.cardContent}>
           <Text style={styles.cardTitle}>{item.name}</Text>
+          {(item.rating != null || item.priceLevel != null) ? (
+            <View style={styles.ratingRow}>
+              {item.rating != null ? (
+                <>
+                  <Ionicons name="star" size={11} color="#f59e0b" />
+                  <Text style={styles.ratingText}>
+                    {item.rating.toFixed(1)}
+                    {item.reviewCount != null
+                      ? ` (${item.reviewCount >= 1000
+                          ? `${(item.reviewCount / 1000).toFixed(1)}k`
+                          : item.reviewCount})`
+                      : ""}
+                  </Text>
+                </>
+              ) : null}
+              {item.rating != null && item.priceLevel != null ? (
+                <Text style={styles.ratingDot}>·</Text>
+              ) : null}
+              {item.priceLevel != null ? (
+                <Text style={styles.ratingText}>{item.priceLevel}</Text>
+              ) : null}
+            </View>
+          ) : null}
         </View>
         {user ? (
           <Pressable

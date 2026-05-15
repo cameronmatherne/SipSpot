@@ -2,6 +2,7 @@ import { useContext, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Image,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -43,11 +44,20 @@ const makeStyles = (C: Theme) => StyleSheet.create({
     padding: 28,
     paddingTop: 60,
   },
+  profileLogoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginBottom: 6,
+  },
+  profileLogoIcon: {
+    width: 40,
+    height: 40,
+  },
   profileLogoText: {
     fontSize: 34,
     fontWeight: "800",
     color: C.accent,
-    marginBottom: 6,
     letterSpacing: -0.5,
   },
   profileTagline: {
@@ -143,6 +153,11 @@ const makeStyles = (C: Theme) => StyleSheet.create({
     backgroundColor: C.accentDark,
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
+  },
+  profileAvatarIcon: {
+    width: 36,
+    height: 36,
   },
   profileHeaderText: {
     flex: 1,
@@ -451,7 +466,14 @@ function ProfileScreen({ spots }: { spots: Spot[] }) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <ScrollView contentContainerStyle={styles.profileScrollContent} keyboardShouldPersistTaps="handled">
-          <Text style={styles.profileLogoText}>SipSpot</Text>
+          <View style={styles.profileLogoRow}>
+            <Image
+              source={require("../assets/app-icon-transparent.png")}
+              style={styles.profileLogoIcon}
+              resizeMode="contain"
+            />
+            <Text style={styles.profileLogoText}>SipSpot</Text>
+          </View>
           <Text style={styles.profileTagline}>Save your favorite happy hours.</Text>
 
           {/* Mode toggle */}
@@ -575,7 +597,11 @@ function ProfileScreen({ spots }: { spots: Spot[] }) {
       {/* User info header */}
       <View style={styles.profileHeader}>
         <View style={styles.profileAvatarCircle}>
-          <Ionicons name="person" size={26} color={C.accent} />
+          <Image
+            source={require("../assets/app-icon-transparent.png")}
+            style={styles.profileAvatarIcon}
+            resizeMode="contain"
+          />
         </View>
         <View style={styles.profileHeaderText}>
           <Text style={styles.profileEmail} numberOfLines={1}>{user.email}</Text>
