@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StyleSheet, View } from "react-native";
 import { useMemo } from "react";
-import { useFonts, Pacifico_400Regular } from "@expo-google-fonts/pacifico";
+import { useFonts, Raleway_800ExtraBold } from "@expo-google-fonts/raleway";
 
 import { useBusinesses } from "./data/useBusinesses";
 import { useAuth } from "./data/useAuth";
@@ -94,7 +94,7 @@ function AppNavigator({ spotsWithDeals }: { spotsWithDeals: ReturnType<typeof us
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function App() {
-  const [fontsLoaded] = useFonts({ Pacifico_400Regular });
+  const [fontsLoaded] = useFonts({ Raleway_800ExtraBold });
   const { businesses } = useBusinesses();
   const spotsWithDeals = businesses;
 

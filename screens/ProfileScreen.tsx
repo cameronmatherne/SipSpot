@@ -64,10 +64,10 @@ const makeStyles = (C: Theme) => StyleSheet.create({
     height: 56,
   },
   profileLogoText: {
-    fontSize: 38,
-    fontFamily: "Pacifico_400Regular",
+    fontSize: 40,
+    fontFamily: "Raleway_800ExtraBold",
     color: C.accent,
-    letterSpacing: 0.5,
+    letterSpacing: 2,
   },
   profileTagline: {
     fontSize: 15,
